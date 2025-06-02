@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIGS - AI Generative Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        @keyframes animatedGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Gradiente base más grande para la animación */
+            background: linear-gradient(135deg, #0d1117, #101b2b, #0a2647, #161B22, #0d1117);
+            background-size: 300% 300%; /* Tamaño del gradiente para permitir movimiento */
+            animation: animatedGradient 25s ease infinite; /* Aplicar animación */
+            color: #C9D1D9;
+        }
+
+        /* Las secciones ahora pueden tener fondos semi-transparentes o colores sólidos
+           que permitan ver sutilmente la animación del body, o sus propios gradientes estáticos
+           si se desea un contraste específico. Para un efecto de movimiento global,
+           los fondos de sección deben ser más sutiles o transparentes. */
+
+        .hero-gradient {
+            /* Mantenemos un gradiente específico para el hero, pero podría ser más sutil
+               o permitir que la animación del body se vea a través de él con opacidad.
+               Por ahora, lo dejamos como estaba para un impacto inicial fuerte. */
+            background: linear-gradient(135deg, rgba(13,17,23,0.9) 0%, rgba(22,27,34,0.85) 40%, rgba(10,38,71,0.95) 100%);
+        }
+
+        .section-overlay {
+            /* Esta clase se puede usar en contenedores internos de secciones
+               si queremos un color de fondo sólido o un gradiente sutil
+               encima de la animación del body. */
+            background-color: rgba(13, 17, 23, 0.6); /* Ejemplo: un overlay oscuro semi-transparente */
+        }
+
+
+        .section-gradient-1 { /* Para Nosotros */
+             /* Hacemos este gradiente más sutil o con transparencia para ver el fondo animado */
+            background: linear-gradient(180deg, rgba(10,38,71,0.7) 0%, rgba(17,24,39,0.8) 60%, rgba(22,27,34,0.9) 100%);
+        }
+        .section-gradient-2 { /* Para Porque Elegirnos */
+            background: linear-gradient(180deg, rgba(13,17,23,0.85) 0%, rgba(17,24,39,0.75) 40%, rgba(22,27,34,0.9) 100%);
+        }
+         .section-solid-bg { /* Para Servicios y Testimonios, para mejor legibilidad */
+            background-color: #0D1117; /* Un color base sólido pero oscuro */
+        }
+
+        .footer-gradient {
+            background: linear-gradient(180deg, rgba(10,38,71,0.85) 0%, rgba(12,15,20,0.95) 100%);
+        }
+
+        .accent-color {
+            color: #20C997; /* Teal accent */
+        }
+        .accent-bg {
+            background-color: #20C997;
+        }
+        .card {
+            background-color: rgba(22, 27, 34, 0.85); /* Ligeramente transparente para integrarse con el fondo */
+            border: 1px solid #30363D;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(5px); /* Efecto de vidrio esmerilado sutil */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(32, 201, 151, 0.15); /* Teal shadow un poco más pronunciado */
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #20C997;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .nav-link:hover {
+            color: #20C997;
+        }
+        .btn-primary {
+            background-color: #20C997;
+            color: #0D1117;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #1aa085;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            border: 2px solid #20C997;
+            color: #20C997;
+            background-color: transparent; /* Para mejor integración con fondos animados */
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #20C997;
+            color: #0D1117;
+            transform: translateY(-2px);
+        }
+        .section-title {
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+        .icon-feature-svg {
+            width: 2.5rem; /* 40px */
+            height: 2.5rem; /* 40px */
+            margin-bottom: 1rem;
+            color: #20C997;
+        }
+        .icon-list-svg {
+            width: 1.25rem; /* 20px */
+            height: 1.25rem; /* 20px */
+            color: #20C997;
+            margin-right: 0.75rem; /* mr-3 */
+            flex-shrink: 0; 
+        }
+        .social-icon-svg {
+            width: 1.5rem; /* 24px */
+            height: 1.5rem; /* 24px */
+            transition: color 0.3s ease;
+        }
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0D1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #30363D;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #20C997;
+        }
+
+        /* Header con backdrop-filter */
+        header {
+             background-color: rgba(13, 17, 23, 0.7); /* Fondo semi-transparente */
+             backdrop-filter: blur(10px); /* Efecto blur para el fondo */
+        }
+        #mobile-menu {
+            background-color: rgba(17, 24, 39, 0.9); /* Fondo del menú móvil con transparencia */
+            backdrop-filter: blur(10px);
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="sticky top-0 z-50 border-b border-gray-700 shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="#" class="text-3xl font-extrabold accent-color">
+                    AIGS
+                </a>
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="#inicio" class="nav-link text-lg font-medium">Inicio</a>
+                    <a href="#nosotros" class="nav-link text-lg font-medium">Nosotros</a>
+                    <a href="#servicios" class="nav-link text-lg font-medium">Servicios</a>
+                    <a href="#contacto" class="nav-link text-lg font-medium">Contacto</a>
+                    <a href="#consulta" class="btn-primary px-6 py-2 rounded-lg font-semibold text-lg">
+                        Solicitar Consulta
+                    </a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                        <svg class="w-6 h-6 current-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden"> <a href="#inicio" class="block px-6 py-3 text-lg hover:bg-gray-700 hover:bg-opacity-50">Inicio</a>
+            <a href="#nosotros" class="block px-6 py-3 text-lg hover:bg-gray-700 hover:bg-opacity-50">Nosotros</a>
+            <a href="#servicios" class="block px-6 py-3 text-lg hover:bg-gray-700 hover:bg-opacity-50">Servicios</a>
+            <a href="#contacto" class="block px-6 py-3 text-lg hover:bg-gray-700 hover:bg-opacity-50">Contacto</a>
+            <a href="#consulta" class="block px-6 py-3 text-lg accent-bg text-gray-900 font-semibold hover:bg-opacity-90">Solicitar Consulta</a>
+        </div>
+    </header>
+
+    <section id="inicio" class="hero-gradient min-h-screen flex items-center justify-center py-20 px-4 overflow-hidden relative">
+        <div class="relative z-10 container mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+                Transformando Negocios con
+                <span class="block accent-color">Inteligencia Artificial Generativa</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
+                En AIGS, fusionamos estrategia y tecnología de vanguardia para potenciar su empresa con soluciones de IA generativa a medida, abriendo nuevas fronteras de innovación y eficiencia.
+            </p>
+            <div class="space-x-0 md:space-x-4 space-y-4 md:space-y-0">
+                <a href="#servicios" class="btn-primary px-10 py-4 rounded-lg text-xl font-semibold inline-block w-full md:w-auto">
+                    Descubre Nuestras Soluciones
+                </a>
+                <a href="#contacto" class="btn-secondary px-10 py-4 rounded-lg text-xl font-semibold inline-block w-full md:w-auto">
+                    Hablemos de tu Proyecto
+                </a>
+            </div>
+        </div>
+        <div class="absolute inset-0 opacity-5 pointer-events-none z-0">
+             <img src="https://placehold.co/1200x800/000000/FFFFFF?text=Patron+Abstracto+Sutil" alt="Fondo abstracto AI sutil" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/1200x800/000000/333333?text=Error+Imagen';">
+        </div>
+    </section>
+
+    <section id="nosotros" class="py-20 px-4 section-gradient-1 relative">
+        <div class="container mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl section-title mb-4">Sobre <span class="accent-color">AIGS</span></h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">Pioneros en la integración de inteligencia artificial generativa para impulsar la transformación digital y el crecimiento empresarial.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="https://placehold.co/600x400/1A202C/C9D1D9?text=Equipo+AIGS" alt="Equipo AIGS o concepto abstracto" class="rounded-xl shadow-2xl w-full h-auto object-cover" onerror="this.src='https://placehold.co/600x400/111827/FFFFFF?text=Imagen+No+Disponible';">
+                </div>
+                <div class="space-y-6">
+                    <h3 class="text-3xl font-semibold mb-4">Nuestra Misión: Innovación y Resultados</h3>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        En AIGS, combinamos una profunda experiencia en inteligencia artificial con un enfoque estratégico para ofrecer soluciones generativas que no solo resuelven los desafíos actuales de su empresa, sino que también anticipan las oportunidades del mañana. Creemos en el poder de la IA para democratizar la innovación y crear un valor tangible.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Nuestro equipo está compuesto por expertos apasionados por la tecnología y comprometidos con la excelencia. Trabajamos de la mano con nuestros clientes para entender sus necesidades únicas y co-crear soluciones que marquen la diferencia.
+                    </p>
+                    <ul class="space-y-3 mt-6">
+                        <li class="flex items-center text-lg">
+                            <svg class="icon-list-svg" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            Experiencia Comprobada y Liderazgo
+                        </li>
+                        <li class="flex items-center text-lg">
+                            <svg class="icon-list-svg" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            Soluciones a Medida y Escalables
+                        </li>
+                        <li class="flex items-center text-lg">
+                            <svg class="icon-list-svg" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            Compromiso con la Ética y la Transparencia
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="py-20 px-4 section-solid-bg relative">
+        <div class="container mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl section-title mb-4">Nuestros Servicios de Consultoría en <span class="accent-color">IA Generativa</span></h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">Ofrecemos un abanico completo de servicios para integrar la IA generativa en el núcleo de su estrategia empresarial.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-8 rounded-xl shadow-xl text-center flex flex-col items-center">
+                    <svg class="icon-feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-7.5h12c.621 0 1.125-.504 1.125-1.125V12c0-.621-.504-1.125-1.125-1.125h-12c-.621 0-1.125.504-1.125 1.125v.75c0 .621.504 1.125 1.125 1.125Z" /></svg>
+                    <h3 class="text-2xl font-semibold mb-3">Estrategia de IA Generativa</h3>
+                    <p class="text-gray-400 leading-relaxed">Diseñamos hojas de ruta estratégicas para la adopción e implementación efectiva de la IA generativa.</p>
+                </div>
+                <div class="card p-8 rounded-xl shadow-xl text-center flex flex-col items-center">
+                    <svg class="icon-feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h12A2.25 2.25 0 0 0 20.25 14.25V3M3.75 21h16.5M16.5 3.75h.008v.008H16.5V3.75Z" /></svg>
+                    <h3 class="text-2xl font-semibold mb-3">Desarrollo de Modelos Personalizados</h3>
+                    <p class="text-gray-400 leading-relaxed">Creamos y entrenamos modelos de IA generativa a medida, optimizados para sus datos y casos de uso.</p>
+                </div>
+                <div class="card p-8 rounded-xl shadow-xl text-center flex flex-col items-center">
+                     <svg class="icon-feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                    <h3 class="text-2xl font-semibold mb-3">Integración de Soluciones AI</h3>
+                    <p class="text-gray-400 leading-relaxed">Integramos herramientas y plataformas de IA generativa en sus sistemas y flujos de trabajo.</p>
+                </div>
+                <div class="card p-8 rounded-xl shadow-xl text-center flex flex-col items-center">
+                    <svg class="icon-feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.17 48.17 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg>
+                    <h3 class="text-2xl font-semibold mb-3">Capacitación y Workshops</h3>
+                    <p class="text-gray-400 leading-relaxed">Empoderamos a su equipo con el conocimiento y las habilidades para aprovechar la IA generativa.</p>
+                </div>
+                <div class="card p-8 rounded-xl shadow-xl text-center flex flex-col items-center">
+                    <svg class="icon-feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
+                    <h3 class="text-2xl font-semibold mb-3">IA Ética y Responsable</h3>
+                    <p class="text-gray-400 leading-relaxed">Asesoramos en la implementación de prácticas de IA generativa éticas, transparentes y responsables.</p>
+                </div>
+                <div class="card p-8 rounded-xl shadow-xl text-center flex flex-col items-center">
+                   <svg class="icon-feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" /></svg>
+                    <h3 class="text-2xl font-semibold mb-3">Optimización y Escalado</h3>
+                    <p class="text-gray-400 leading-relaxed">Ayudamos a optimizar y escalar sus soluciones de IA para un rendimiento sostenido y ROI máximo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="porque-elegirnos" class="py-20 px-4 section-gradient-2 relative">
+        <div class="container mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl section-title mb-4">¿Por Qué <span class="accent-color">AIGS</span>?</h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">Somos su socio estratégico en el viaje hacia la excelencia impulsada por la IA.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6">
+                    <div class="p-3 inline-flex items-center justify-center rounded-full bg-teal-500 bg-opacity-20 mb-4"> <svg class="w-10 h-10 accent-color" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-4.5A3.75 3.75 0 0 0 12 9.75V15m-3 0V9.75A3.75 3.75 0 0 1 12 6v3.75m-3 5.25V15m6-15v3.75" /></svg> 
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Experiencia Comprobada</h3>
+                    <p class="text-gray-400">Liderazgo y trayectoria en la vanguardia de la IA generativa.</p>
+                </div>
+                <div class="text-center p-6">
+                     <div class="p-3 inline-flex items-center justify-center rounded-full bg-teal-500 bg-opacity-20 mb-4">
+                       <svg class="w-10 h-10 accent-color" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.354a15.057 15.057 0 0 1-4.5 0M3 16.5v-1.5A2.25 2.25 0 0 1 5.25 12.75h13.5A2.25 2.25 0 0 1 21 15v1.5m-18 0h18M12 6.75A2.25 2.25 0 1 1 12 2.25a2.25 2.25 0 0 1 0 4.5Z" /></svg> 
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Innovación Constante</h3>
+                    <p class="text-gray-400">Comprometidos con la investigación y aplicación de las últimas tecnologías.</p>
+                </div>
+                <div class="text-center p-6">
+                     <div class="p-3 inline-flex items-center justify-center rounded-full bg-teal-500 bg-opacity-20 mb-4">
+                       <svg class="w-10 h-10 accent-color" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-3.741-5.588M14.25 10.5h.008v.008h-.008V10.5Zm.158 3.248a.75.75 0 0 1-.316.632l-1.249.833a.75.75 0 0 1-1.114-.445l-.843-2.53a.75.75 0 0 1 .106-.734l3.714-3.713a.75.75 0 0 1 1.06 0l.884.883a.75.75 0 0 1 0 1.06l-3.713 3.713ZM12 21a9.094 9.094 0 0 1-3.741-.479 3 3 0 1 1 3.741-5.588" /></svg> 
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Enfoque Personalizado</h3>
+                    <p class="text-gray-400">Soluciones adaptadas a sus necesidades y objetivos únicos.</p>
+                </div>
+                <div class="text-center p-6">
+                     <div class="p-3 inline-flex items-center justify-center rounded-full bg-teal-500 bg-opacity-20 mb-4">
+                        <svg class="w-10 h-10 accent-color" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5" /></svg> 
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Resultados Medibles</h3>
+                    <p class="text-gray-400">Nos enfocamos en generar un impacto tangible y un ROI claro.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="testimonios" class="py-20 px-4 section-solid-bg relative">
+        <div class="container mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl section-title mb-4">Lo Que Dicen <span class="accent-color">Nuestros Clientes</span></h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">La confianza y el éxito de nuestros clientes son nuestro mayor aval.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-8 rounded-xl shadow-xl">
+                    <p class="text-gray-300 italic mb-6">"AIGS transformó nuestra aproximación a los datos. Su experticia en IA generativa nos ha dado una ventaja competitiva increíble."</p>
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/50x50/20C997/0D1117?text=AP" alt="Cliente Ana Pérez" class="w-12 h-12 rounded-full mr-4" onerror="this.src='https://placehold.co/50x50/20C997/0D1117?text=C';">
+                        <div>
+                            <h4 class="font-semibold text-lg">Ana Pérez</h4>
+                            <p class="text-sm text-gray-500">CEO, Innovatech Solutions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-8 rounded-xl shadow-xl">
+                    <p class="text-gray-300 italic mb-6">"El equipo de AIGS no solo es técnicamente brillante, sino que también entiende profundamente las necesidades del negocio. ¡Altamente recomendados!"</p>
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/50x50/20C997/0D1117?text=CL" alt="Cliente Carlos López" class="w-12 h-12 rounded-full mr-4" onerror="this.src='https://placehold.co/50x50/20C997/0D1117?text=C';">
+                        <div>
+                            <h4 class="font-semibold text-lg">Carlos López</h4>
+                            <p class="text-sm text-gray-500">Director de Operaciones, Future Dynamics</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-8 rounded-xl shadow-xl">
+                    <p class="text-gray-300 italic mb-6">"Desde la estrategia hasta la implementación, AIGS ha sido un socio invaluable. Sus soluciones de IA han optimizado nuestros procesos significativamente."</p>
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/50x50/20C997/0D1117?text=SM" alt="Cliente Sofía Martínez" class="w-12 h-12 rounded-full mr-4" onerror="this.src='https://placehold.co/50x50/20C997/0D1117?text=C';">
+                        <div>
+                            <h4 class="font-semibold text-lg">Sofía Martínez</h4>
+                            <p class="text-sm text-gray-500">Gerente de Innovación, Quantum Leap Inc.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-20 px-4 hero-gradient relative"> <div class="container mx-auto text-center relative z-10">
+            <h2 class="text-4xl md:text-5xl section-title mb-6">¿Listo para <span class="accent-color">Revolucionar</span> su Negocio con IA?</h2>
+            <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                Contáctenos hoy mismo para una consulta gratuita y descubra cómo AIGS puede ayudarle a alcanzar sus metas más ambiciosas.
+            </p>
+            <form id="contact-form" class="max-w-xl mx-auto space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <input type="text" placeholder="Nombre Completo" class="w-full p-4 rounded-lg bg-gray-700 bg-opacity-60 border border-gray-600 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none placeholder-gray-400 text-white" required>
+                    <input type="email" placeholder="Correo Electrónico" class="w-full p-4 rounded-lg bg-gray-700 bg-opacity-60 border border-gray-600 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none placeholder-gray-400 text-white" required>
+                </div>
+                <input type="text" placeholder="Asunto" class="w-full p-4 rounded-lg bg-gray-700 bg-opacity-60 border border-gray-600 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none placeholder-gray-400 text-white">
+                <textarea placeholder="Su Mensaje..." rows="5" class="w-full p-4 rounded-lg bg-gray-700 bg-opacity-60 border border-gray-600 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none placeholder-gray-400 text-white" required></textarea>
+                <button type="submit" class="btn-primary px-10 py-4 rounded-lg text-xl font-semibold w-full">
+                    Enviar Mensaje
+                </button>
+            </form>
+            <div id="form-message" class="mt-6 text-lg"></div>
+        </div>
+    </section>
+    
+    <footer class="py-12 px-4 footer-gradient relative">
+        <div class="container mx-auto relative z-10">
+            <div class="grid md:grid-cols-3 gap-8 mb-8 text-center md:text-left">
+                <div>
+                    <h3 class="text-2xl font-extrabold accent-color mb-3">AIGS</h3>
+                    <p class="text-gray-400">Soluciones de Inteligencia Artificial Generativa para un futuro más inteligente.</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-3">Enlaces Rápidos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#inicio" class="text-gray-300 hover:accent-color transition-colors">Inicio</a></li>
+                        <li><a href="#nosotros" class="text-gray-300 hover:accent-color transition-colors">Nosotros</a></li>
+                        <li><a href="#servicios" class="text-gray-300 hover:accent-color transition-colors">Servicios</a></li>
+                        <li><a href="#contacto" class="text-gray-300 hover:accent-color transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-3">Síganos</h4>
+                    <div class="flex space-x-6 justify-center md:justify-start">
+                        <a href="#" aria-label="LinkedIn" class="text-gray-400 hover:accent-color transition-colors">
+                            <svg class="social-icon-svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="text-gray-400 hover:accent-color transition-colors">
+                            <svg class="social-icon-svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-.422.724-.665 1.56-.665 2.454 0 1.717.87 3.228 2.198 4.105-.807-.026-1.566-.247-2.229-.616v.054c0 2.393 1.703 4.382 3.956 4.83-.414.112-.85.172-1.296.172-.317 0-.623-.031-.922-.086.63 1.952 2.445 3.372 4.604 3.411-1.69 1.323-3.823 2.105-6.142 2.105-.4 0-.792-.023-1.175-.069 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.213-.005-.426-.015-.637.96-.695 1.795-1.56 2.457-2.54z"/></svg>
+                        </a>
+                        <a href="#" aria-label="GitHub" class="text-gray-400 hover:accent-color transition-colors">
+                           <svg class="social-icon-svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.799 24 17.301 24 12c0-6.627-5.373-12-12-12Z" clip-rule="evenodd" /></svg>
+                        </a>
+                    </div>
+                    <p class="mt-4 text-gray-400">Email: <a href="mailto:contacto@aigs.com" class="hover:accent-color">contacto@aigs.com</a></p>
+                    <p class="text-gray-400">Tel: <a href="tel:+1234567890" class="hover:accent-color">+1 (234) 567-890</a></p>
+                </div>
+            </div>
+            <div class="text-center text-gray-500 border-t border-gray-700 pt-8">
+                <p>&copy; <span id="currentYear"></span> AIGS - AI Generative Solutions. Todos los derechos reservados.</p>
+                <p><a href="#" class="hover:accent-color">Política de Privacidad</a> | <a href="#" class="hover:accent-color">Términos de Servicio</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script para el menú móvil
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = mobileMenuButton.querySelector('.current-icon');
+        const barsIconPath = "M4 6h16M4 12h16m-7 6h7";
+        const xIconPath = "M6 18L18 6M6 6l12 12";
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const currentPath = menuIcon.querySelector('path').getAttribute('d');
+            if (currentPath === barsIconPath) {
+                menuIcon.querySelector('path').setAttribute('d', xIconPath);
+            } else {
+                menuIcon.querySelector('path').setAttribute('d', barsIconPath);
+            }
+        });
+
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.querySelector('path').setAttribute('d', barsIconPath);
+            });
+        });
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId.length > 1 && document.querySelector(targetId)) {
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                } else if (targetId === "#") {
+                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const contactForm = document.getElementById('contact-form');
+        const formMessage = document.getElementById('form-message');
+
+        if(contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                formMessage.textContent = 'Enviando mensaje...';
+                formMessage.classList.remove('text-red-500', 'accent-color');
+                
+                setTimeout(() => {
+                    formMessage.textContent = '¡Gracias! Su mensaje ha sido enviado con éxito. Nos pondremos en contacto pronto.';
+                    formMessage.classList.add('accent-color'); 
+                    contactForm.reset(); 
+                }, 2000);
+            });
+        }
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            observer.observe(card);
+        });
+
+    </script>
+</body>
+</html>
