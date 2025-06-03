@@ -102,12 +102,7 @@ const Hero: React.FC<HeroProps> = ({
           <div className={`lg:w-1/2 text-center lg:text-left transition-all duration-1000 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
-            {/* Logo Integration */}
-            <div className="mb-8 flex justify-center lg:justify-start">
-              <Logo size="lg" className="animate-float" />
-            </div>
-
-            {/* Main Title */}
+            {/* Main Title - Sin logo redundante */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6">
               <span className="title-gradient">{title}</span>
               <br />
