@@ -59,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center justify-between">
             {/* Logo Section */}
             <div className="flex items-center space-x-3">
-              <Logo size="sm" className="animate-float" />
+              <Logo size="sm" className="" />
               <button 
                 onClick={() => scrollToSection('#inicio')}
                 className="text-2xl font-display font-bold title-accent hover:scale-105 transition-transform duration-300"

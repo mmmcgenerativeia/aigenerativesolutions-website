@@ -24,7 +24,8 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
     <div className={`logo-container-3d relative flex justify-center items-center ${sizeClasses[size]} ${className}`}>
       <div className={`logo-text-3d ${textSizeClasses[size]} font-exo`}>
         <span className="ai-part-3d">AI</span>{' '}
-        <span className="solutions-part-3d">Generative Solutions</span>
+        <span className="ai-part-3d">G</span><span className="solutions-part-3d">enerative </span>
+        <span className="ai-part-3d">S</span><span className="solutions-part-3d">olutions</span>
       </div>
 
       <div className="satellite-3d satellite-1-3d"></div>

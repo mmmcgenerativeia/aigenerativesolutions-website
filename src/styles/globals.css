@@ -313,12 +313,22 @@
   .ai-part-3d {
     font-weight: 800;
     color: #ffffff;
+    text-shadow: 
+      0 0 8px rgba(0, 212, 255, 1),
+      0 0 12px rgba(0, 212, 255, 0.8),
+      0 0 16px rgba(0, 212, 255, 0.6);
   }
   
   .solutions-part-3d {
-    opacity: 0.95;
+    opacity: 0.8;
     font-weight: 600;
+    color: #e2e8f0;
+    text-shadow: 
+      0 0 3px rgba(0, 212, 255, 0.3),
+      0 0 6px rgba(0, 212, 255, 0.2);
   }
+
+
 
   .satellite-3d {
     position: absolute;

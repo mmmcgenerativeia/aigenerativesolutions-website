@@ -65,35 +65,9 @@ const Hero: React.FC<HeroProps> = ({
     >
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating Particles */}
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-accent-cyan/20 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 2}s`
-            }}
-          />
-        ))}
-        
-        {/* Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: '50px 50px'
-          }}
-        />
-        
-        {/* Radial Glow Effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-cyan/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-magenta/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        {/* Radial Glow Effects - Solo efectos sutiles de fondo */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-cyan/3 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-magenta/3 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
       <div className="container mx-auto px-6 py-20 relative z-10">
@@ -171,45 +145,14 @@ const Hero: React.FC<HeroProps> = ({
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
           }`}>
             <div className="relative">
-              {/* Main Logo */}
+              {/* Main Logo - Estático como en el original */}
               <div className="relative z-10">
-                <Logo size="xl" className="animate-float drop-shadow-2xl" />
+                <Logo size="xl" className="drop-shadow-2xl" />
               </div>
 
-              {/* Surrounding Effects */}
-              <div className="absolute inset-0 -m-20">
-                {/* Orbiting Elements */}
-                {[...Array(6)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute w-4 h-4 rounded-full animate-spin"
-                    style={{
-                      background: `linear-gradient(45deg, ${
-                        ['#00d4ff', '#ff4da6', '#ffd700', '#00ff88', '#ff8533', '#8b5cf6'][i]
-                      }, transparent)`,
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      animation: `spin ${8 + i * 2}s linear infinite reverse`
-                    }}
-                  >
-                    <div 
-                      className="w-2 h-2 rounded-full absolute"
-                      style={{
-                        background: ['#00d4ff', '#ff4da6', '#ffd700', '#00ff88', '#ff8533', '#8b5cf6'][i],
-                        boxShadow: `0 0 10px ${['#00d4ff', '#ff4da6', '#ffd700', '#00ff88', '#ff8533', '#8b5cf6'][i]}`,
-                        top: `${-150 - i * 20}px`,
-                        left: '50%',
-                        transform: 'translateX(-50%)'
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              {/* Glow Effects */}
-              <div className="absolute inset-0 -m-32 bg-gradient-radial from-accent-cyan/20 via-transparent to-transparent rounded-full blur-3xl animate-pulse" />
-              <div className="absolute inset-0 -m-40 bg-gradient-radial from-accent-magenta/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+              {/* Glow Effects sutiles de fondo */}
+              <div className="absolute inset-0 -m-32 bg-gradient-radial from-accent-cyan/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse" />
+              <div className="absolute inset-0 -m-40 bg-gradient-radial from-accent-magenta/5 via-transparent to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
             </div>
           </div>
         </div>
