@@ -66,9 +66,9 @@ const Hero: React.FC<HeroProps> = ({
       {/* Animated Background Elements - Temática minera */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Efectos sutiles con colores mineros */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/3 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/3 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-yellow-600/2 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/3 rounded-full blur-3xl animate-subtle-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/3 rounded-full blur-3xl animate-subtle-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-yellow-600/2 rounded-full blur-2xl animate-subtle-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
       <div className="container mx-auto px-6 py-20 relative z-10">

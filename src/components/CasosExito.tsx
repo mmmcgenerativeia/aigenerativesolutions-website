@@ -90,14 +90,26 @@ const CasosExito: React.FC<CasosExitoProps> = ({
 
   return (
     <section id="casos-exito" className="py-24 px-4 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800"></div>
+      {/* Background Elements con la imagen */}
+      <div className="absolute inset-0">
+        {/* Imagen de fondo con overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/Gemini_Generated_Image_c39w3ac39w3ac39w.png')`,
+            filter: 'blur(2px) brightness(0.15)'
+          }}
+        />
+        
+        {/* Overlay gradiente para mejor legibilidad */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-slate-800/90 to-slate-900/95"></div>
+      </div>
       
       {/* Animated Background Patterns */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-10 right-10 w-80 h-80 bg-yellow-500/4 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-10 left-10 w-96 h-96 bg-blue-600/4 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/3 left-1/3 w-64 h-64 bg-green-500/3 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-10 right-10 w-80 h-80 bg-yellow-500/4 rounded-full blur-3xl animate-subtle-pulse"></div>
+        <div className="absolute bottom-10 left-10 w-96 h-96 bg-blue-600/4 rounded-full blur-3xl animate-subtle-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/3 left-1/3 w-64 h-64 bg-green-500/3 rounded-full blur-2xl animate-subtle-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
 
       <div className="container mx-auto relative z-10">
@@ -107,7 +119,7 @@ const CasosExito: React.FC<CasosExitoProps> = ({
             <span className="title-gradient">{title.split('Impacto')[0]}</span>
             <span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent font-extrabold">Impacto Real</span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl text-slate-300 max-w-4xl mx-auto leading-relaxed">
             {subtitle}
           </p>
           
@@ -123,18 +135,20 @@ const CasosExito: React.FC<CasosExitoProps> = ({
             <div
               key={index}
               data-index={index}
-              className={`caso-card glass-card group cursor-pointer transition-all duration-700 ${
+              className={`caso-card glass-card group cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl ${
                 visibleCards.includes(index) 
                   ? 'opacity-100 translate-y-0' 
                   : 'opacity-0 translate-y-8'
               }`}
               style={{
-                background: `linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(30, 41, 59, 0.3))`
+                background: `linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(30, 41, 59, 0.6))`,
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
               }}
             >
               {/* Header with Icon */}
-              <div className={`p-6 bg-gradient-to-r ${caso.gradientColor} rounded-t-2xl`}>
-                <div className="flex items-center gap-4 mb-4">
+              <div className={`p-6 bg-gradient-to-r ${caso.gradientColor} rounded-t-2xl relative overflow-hidden`}>
+                <div className="flex items-center gap-4 mb-4 relative z-10">
                   <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                     <div className="text-white">
                       {caso.icon}
@@ -146,7 +160,7 @@ const CasosExito: React.FC<CasosExitoProps> = ({
                 </div>
                 
                 {/* Resultado Destacado */}
-                <div className="bg-white/10 rounded-lg p-3 mb-4">
+                <div className="bg-white/10 rounded-lg p-3 mb-4 relative z-10">
                   <p className="text-white font-bold text-lg text-center">
                     {caso.resultadoDestacado}
                   </p>
@@ -154,6 +168,9 @@ const CasosExito: React.FC<CasosExitoProps> = ({
                     {caso.roi}
                   </p>
                 </div>
+
+                {/* Subtle pattern overlay solo en hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-br from-white/10 to-transparent"></div>
               </div>
 
               {/* Content */}
@@ -166,7 +183,7 @@ const CasosExito: React.FC<CasosExitoProps> = ({
                     </svg>
                     El Desafío
                   </h4>
-                  <p className="text-slate-400 leading-relaxed text-sm">
+                  <p className="text-slate-300 leading-relaxed text-sm group-hover:text-slate-200 transition-colors duration-300">
                     {caso.desafio}
                   </p>
                 </div>
@@ -179,7 +196,7 @@ const CasosExito: React.FC<CasosExitoProps> = ({
                     </svg>
                     Nuestra Solución
                   </h4>
-                  <p className="text-slate-400 leading-relaxed text-sm">
+                  <p className="text-slate-300 leading-relaxed text-sm group-hover:text-slate-200 transition-colors duration-300">
                     {caso.solucion}
                   </p>
                 </div>
@@ -192,23 +209,26 @@ const CasosExito: React.FC<CasosExitoProps> = ({
                     </svg>
                     El Resultado
                   </h4>
-                  <p className="text-slate-300 leading-relaxed text-sm font-medium">
+                  <p className="text-slate-200 leading-relaxed text-sm font-medium group-hover:text-white transition-colors duration-300">
                     {caso.resultado}
                   </p>
                 </div>
               </div>
 
-              {/* Interactive Border */}
+              {/* Hover Border sutil */}
               <div 
-                className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r ${caso.gradientColor} bg-opacity-10`}
+                className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`}
                 style={{
-                  border: `1px solid rgba(255, 255, 255, 0.1)`
+                  border: `2px solid transparent`,
+                  background: `linear-gradient(135deg, ${caso.gradientColor.split(' ')[1]}, ${caso.gradientColor.split(' ')[3]}) border-box`,
+                  mask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
+                  maskComposite: 'exclude'
                 }}
               ></div>
 
-              {/* Hover Indicator */}
-              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+              {/* Hover Indicator sutil */}
+              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-70 transition-all duration-500">
+                <div className="w-3 h-3 bg-white/60 rounded-full animate-subtle-pulse"></div>
               </div>
             </div>
           ))}
@@ -216,17 +236,17 @@ const CasosExito: React.FC<CasosExitoProps> = ({
 
         {/* Impact Summary */}
         <div className="grid md:grid-cols-3 gap-8 mb-12">
-          <div className="text-center glass-card p-6 bg-gradient-to-b from-orange-500/10 to-yellow-500/10 border border-orange-400/20">
+          <div className="text-center glass-card p-6 bg-gradient-to-b from-orange-500/10 to-yellow-500/10 border border-orange-400/20 backdrop-blur-sm">
             <div className="text-4xl font-bold text-orange-400 mb-2">95%</div>
             <div className="text-slate-300">de nuestros proyectos</div>
             <div className="text-sm text-slate-400">superan las expectativas de ROI</div>
           </div>
-          <div className="text-center glass-card p-6 bg-gradient-to-b from-blue-500/10 to-teal-500/10 border border-blue-400/20">
+          <div className="text-center glass-card p-6 bg-gradient-to-b from-blue-500/10 to-teal-500/10 border border-blue-400/20 backdrop-blur-sm">
             <div className="text-4xl font-bold text-blue-400 mb-2">6 meses</div>
             <div className="text-slate-300">tiempo promedio</div>
             <div className="text-sm text-slate-400">para generar ROI positivo</div>
           </div>
-          <div className="text-center glass-card p-6 bg-gradient-to-b from-green-500/10 to-emerald-500/10 border border-green-400/20">
+          <div className="text-center glass-card p-6 bg-gradient-to-b from-green-500/10 to-emerald-500/10 border border-green-400/20 backdrop-blur-sm">
             <div className="text-4xl font-bold text-green-400 mb-2">$2.5M</div>
             <div className="text-slate-300">ahorro promedio anual</div>
             <div className="text-sm text-slate-400">por proyecto implementado</div>
@@ -235,7 +255,7 @@ const CasosExito: React.FC<CasosExitoProps> = ({
 
         {/* Call to Action */}
         <div className="text-center">
-          <div className="glass-card p-8 bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-400/30 max-w-4xl mx-auto">
+          <div className="glass-card p-8 bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-400/30 max-w-4xl mx-auto backdrop-blur-sm">
             <h3 className="text-2xl font-bold text-white mb-4">
               ¿Su operación podría ser el próximo caso de éxito?
             </h3>
@@ -247,7 +267,7 @@ const CasosExito: React.FC<CasosExitoProps> = ({
                 const element = document.getElementById('contacto');
                 if (element) element.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="bg-gradient-to-r from-orange-500 to-yellow-600 text-slate-900 font-semibold text-lg px-8 py-4 rounded-xl hover:from-orange-400 hover:to-yellow-500 transition-all duration-300 group"
+              className="bg-gradient-to-r from-orange-500 to-yellow-600 text-slate-900 font-semibold text-lg px-8 py-4 rounded-xl hover:from-orange-400 hover:to-yellow-500 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
             >
               <span className="flex items-center gap-2">
                 Analicemos su Caso

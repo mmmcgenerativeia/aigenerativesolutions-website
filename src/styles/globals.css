@@ -18,7 +18,7 @@
       radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
       linear-gradient(135deg, #020617 0%, #0f172a 25%, #1e293b 50%, #0f172a 75%, #020617 100%);
     background-size: 400% 400%;
-    animation: gradientShift 20s ease infinite;
+    animation: gradientShift 30s ease infinite;
     color: #f1f5f9;
     margin: 0;
     padding: 0;
@@ -260,7 +260,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     background-size: 200% 200%;
-    animation: gradientShift 3s ease infinite;
+    animation: gradientShift 8s ease infinite;
   }
 
   /* Footer moderno */
@@ -423,6 +423,51 @@
     100% { transform: rotateX(-30deg) rotateY(360deg) translateX(150px) translateZ(-40px) rotateY(-360deg) scale(0.6); opacity: 0.6;}
   }
 
+  /* Animaciones suaves y elegantes */
+  @keyframes float {
+    0%, 100% { 
+      transform: translateY(0px) rotate(0deg);
+      opacity: 0.8;
+    }
+    50% { 
+      transform: translateY(-10px) rotate(2deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes glow {
+    0% { 
+      box-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+      opacity: 0.7;
+    }
+    100% { 
+      box-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* Utilidades adicionales */
   .text-glow {
     text-shadow: 0 0 10px currentColor;
@@ -433,10 +478,27 @@
   }
 
   .animate-float {
-    animation: float 3s ease-in-out infinite;
+    animation: float 6s ease-in-out infinite;
   }
 
   .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
+    animation: glow 4s ease-in-out infinite alternate;
+  }
+
+  .animate-pulse {
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  /* Animaciones más sutiles para elementos específicos */
+  .animate-subtle-pulse {
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  .animate-gentle-float {
+    animation: float 8s ease-in-out infinite;
   }
 } 

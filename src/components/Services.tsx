@@ -282,7 +282,7 @@ const Services: React.FC<ServicesProps> = ({
                 const element = document.getElementById('contacto');
                 if (element) element.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="bg-gradient-to-r from-orange-500 to-yellow-600 text-slate-900 font-semibold text-lg px-8 py-4 rounded-xl hover:from-orange-400 hover:to-yellow-500 transition-all duration-300 group"
+              className="bg-gradient-to-r from-orange-500 to-yellow-600 text-slate-900 font-semibold text-lg px-8 py-4 rounded-xl hover:from-orange-400 hover:to-yellow-500 hover:scale-105 hover:shadow-lg transition-all duration-300 group"
             >
               <span className="flex items-center gap-2">
                 Solicitar una Demo Gratuita

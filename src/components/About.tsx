@@ -107,14 +107,14 @@ const About: React.FC<AboutProps> = ({
       
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-10 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 left-10 w-80 h-80 bg-blue-600/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        <div className="absolute top-1/4 right-10 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl animate-subtle-pulse"></div>
+        <div className="absolute bottom-1/4 left-10 w-80 h-80 bg-blue-600/5 rounded-full blur-3xl animate-subtle-pulse" style={{ animationDelay: '1.5s' }}></div>
         
         {/* Floating Elements */}
         {[...Array(12)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-2 h-2 bg-yellow-500/10 rounded-full animate-float"
+            className="absolute w-2 h-2 bg-yellow-500/10 rounded-full animate-gentle-float"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
