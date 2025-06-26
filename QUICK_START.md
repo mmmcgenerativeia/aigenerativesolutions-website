@@ -7,7 +7,7 @@
 npm install
 
 # 2. Ejecutar en desarrollo
-npm run dev
+npm run dev git remote add origin 
 
 # 3. Abrir navegador en http://localhost:3000
 ```

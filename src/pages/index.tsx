@@ -1,8 +1,9 @@
 import React from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-import About from '@/components/About';
 import Services from '@/components/Services';
+import CasosExito from '@/components/CasosExito';
+import About from '@/components/About';
 import WhyUs from '@/components/WhyUs';
 import Testimonials from '@/components/Testimonials';
 import Contact from '@/components/Contact';
@@ -39,8 +40,9 @@ const HomePage: React.FC<HomePageProps> = () => {
       
       <main>
         <Hero />
-        <About />
         <Services />
+        <CasosExito />
+        <About />
         <WhyUs />
         <Testimonials />
         <Contact onSubmit={handleContactSubmit} />
