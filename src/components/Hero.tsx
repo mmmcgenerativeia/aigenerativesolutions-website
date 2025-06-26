@@ -56,13 +56,38 @@ const Hero: React.FC<HeroProps> = ({
       className="hero-section min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
       style={{
         background: `
-          radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 140, 0, 0.1) 0%, transparent 50%),
-          radial-gradient(circle at ${100 - mousePosition.x}% ${100 - mousePosition.y}%, rgba(0, 100, 150, 0.08) 0%, transparent 50%),
-          radial-gradient(circle at 50% 50%, rgba(139, 69, 19, 0.05) 0%, transparent 70%),
+          radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 140, 0, 0.15) 0%, transparent 50%),
+          radial-gradient(circle at ${100 - mousePosition.x}% ${100 - mousePosition.y}%, rgba(0, 100, 150, 0.12) 0%, transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(139, 69, 19, 0.08) 0%, transparent 70%),
           linear-gradient(135deg, rgba(2, 6, 23, 0.95) 0%, rgba(20, 25, 45, 0.9) 50%, rgba(40, 35, 25, 0.85) 100%)
         `
       }}
     >
+      {/* Imagen de fondo Minería 4.0 */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/Gemini_Generated_Image_c39w3ac39w3ac39w.png')`,
+            filter: 'blur(1px) brightness(0.2)'
+          }}
+        />
+        
+        {/* Overlay gradiente para mejor legibilidad */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-800/85 to-slate-900/90"></div>
+        
+        {/* Overlay adicional con efecto de luz del mouse */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 140, 0, 0.1) 0%, transparent 60%),
+              radial-gradient(circle at ${100 - mousePosition.x}% ${100 - mousePosition.y}%, rgba(0, 100, 150, 0.08) 0%, transparent 60%)
+            `
+          }}
+        />
+      </div>
+
       {/* Animated Background Elements - Temática minera */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Efectos sutiles con colores mineros */}
@@ -89,8 +114,8 @@ const Hero: React.FC<HeroProps> = ({
               <Logo size="xl" className="drop-shadow-2xl transform scale-150 md:scale-175" />
               
               {/* Glow Effects con temática minera */}
-              <div className="absolute inset-0 -m-32 bg-gradient-radial from-orange-400/8 via-transparent to-transparent rounded-full blur-3xl animate-pulse" />
-              <div className="absolute inset-0 -m-40 bg-gradient-radial from-blue-500/5 via-transparent to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+              <div className="absolute inset-0 -m-32 bg-gradient-radial from-orange-400/8 via-transparent to-transparent rounded-full blur-3xl animate-subtle-pulse" />
+              <div className="absolute inset-0 -m-40 bg-gradient-radial from-blue-500/5 via-transparent to-transparent rounded-full blur-3xl animate-subtle-pulse" style={{ animationDelay: '1s' }} />
             </div>
           </div>
 
@@ -123,7 +148,7 @@ const Hero: React.FC<HeroProps> = ({
           }`}>
             <button
               onClick={() => handleButtonClick(primaryButtonHref)}
-              className="btn-primary-modern text-lg px-10 py-4 group relative overflow-hidden bg-gradient-to-r from-orange-500 to-yellow-600 hover:from-orange-400 hover:to-yellow-500"
+              className="btn-primary-modern text-lg px-10 py-4 group relative overflow-hidden bg-gradient-to-r from-orange-500 to-yellow-600 hover:from-orange-400 hover:to-yellow-500 hover:scale-105 hover:shadow-lg"
             >
               <span className="relative z-10 flex items-center justify-center gap-2 text-slate-900 font-semibold">
                 {primaryButton}
@@ -135,7 +160,7 @@ const Hero: React.FC<HeroProps> = ({
             
             <button
               onClick={() => handleButtonClick(secondaryButtonHref)}
-              className="btn-secondary-modern text-lg px-10 py-4 group border-2 border-orange-400 text-orange-400 hover:bg-orange-400/10"
+              className="btn-secondary-modern text-lg px-10 py-4 group border-2 border-orange-400 text-orange-400 hover:bg-orange-400/10 hover:scale-105"
             >
               <span className="flex items-center justify-center gap-2">
                 {secondaryButton}
@@ -150,15 +175,15 @@ const Hero: React.FC<HeroProps> = ({
           <div className={`grid grid-cols-3 gap-8 max-w-3xl mx-auto transition-all duration-1000 delay-1000 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}>
-            <div className="text-center">
+            <div className="text-center glass-card p-4 rounded-xl bg-gradient-to-b from-orange-500/10 to-yellow-500/10 border border-orange-400/20 backdrop-blur-sm">
               <div className="text-3xl font-bold text-orange-400 mb-2">+15%</div>
               <div className="text-sm text-slate-400">Recuperación Promedio</div>
             </div>
-            <div className="text-center">
+            <div className="text-center glass-card p-4 rounded-xl bg-gradient-to-b from-blue-500/10 to-teal-500/10 border border-blue-400/20 backdrop-blur-sm">
               <div className="text-3xl font-bold text-yellow-500 mb-2">-30%</div>
               <div className="text-sm text-slate-400">Downtime No Planificado</div>
             </div>
-            <div className="text-center">
+            <div className="text-center glass-card p-4 rounded-xl bg-gradient-to-b from-green-500/10 to-emerald-500/10 border border-green-400/20 backdrop-blur-sm">
               <div className="text-3xl font-bold text-blue-400 mb-2">10x</div>
               <div className="text-sm text-slate-400">ROI Promedio</div>
             </div>

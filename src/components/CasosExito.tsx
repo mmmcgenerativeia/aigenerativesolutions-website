@@ -90,20 +90,8 @@ const CasosExito: React.FC<CasosExitoProps> = ({
 
   return (
     <section id="casos-exito" className="py-24 px-4 relative overflow-hidden">
-      {/* Background Elements con la imagen */}
-      <div className="absolute inset-0">
-        {/* Imagen de fondo con overlay */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('/Gemini_Generated_Image_c39w3ac39w3ac39w.png')`,
-            filter: 'blur(2px) brightness(0.15)'
-          }}
-        />
-        
-        {/* Overlay gradiente para mejor legibilidad */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-slate-800/90 to-slate-900/95"></div>
-      </div>
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800"></div>
       
       {/* Animated Background Patterns */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
