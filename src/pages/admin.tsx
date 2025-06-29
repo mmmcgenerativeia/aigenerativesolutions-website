@@ -44,7 +44,7 @@ const AdminDashboard: React.FC = () => {
 
     // Conectar a Socket.IO
     const serverUrl = process.env.NODE_ENV === 'production' 
-      ? process.env.NEXT_PUBLIC_SERVER_URL || 'https://tu-servidor-railway.railway.app'
+      ? process.env.NEXT_PUBLIC_SERVER_URL || 'https://aigs-whatsapp-server.onrender.com'
       : 'http://localhost:3003';
     const newSocket = io(serverUrl);
     setSocket(newSocket);
@@ -125,7 +125,7 @@ const AdminDashboard: React.FC = () => {
   const loadConversations = async () => {
     try {
       const serverUrl = process.env.NODE_ENV === 'production' 
-        ? process.env.NEXT_PUBLIC_SERVER_URL || 'https://tu-servidor-railway.railway.app'
+        ? process.env.NEXT_PUBLIC_SERVER_URL || 'https://aigs-whatsapp-server.onrender.com'
         : 'http://localhost:3003';
       const response = await fetch(`${serverUrl}/api/conversations`);
       const data = await response.json();

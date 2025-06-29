@@ -326,7 +326,7 @@ const WhatsAppAgent: React.FC = () => {
     
     // Usar la URL del entorno o localhost para desarrollo
     const socketUrl = process.env.NODE_ENV === 'production' 
-      ? process.env.NEXT_PUBLIC_SERVER_URL || 'https://tu-servidor-railway.railway.app'
+      ? process.env.NEXT_PUBLIC_SERVER_URL || 'https://aigs-whatsapp-server.onrender.com'
               : 'http://localhost:3003'; // En desarrollo, usar localhost
     
     socketRef.current = io(socketUrl, {
@@ -558,7 +558,7 @@ const WhatsAppAgent: React.FC = () => {
                   className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                     message.isBot
                       ? 'bg-gray-100 text-gray-800'
-                      : 'bg-green-500 text-white'
+                      : 'bg-green-500 text-gray-900 font-medium'
                   }`}
                 >
                   <div className="whitespace-pre-wrap text-sm">{message.text}</div>
