@@ -9,7 +9,12 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000", 
+      "http://localhost:3002",
+      "https://www.aigenerativesolutions.com",
+      "https://aigenerativesolutions.vercel.app"
+    ],
     methods: ["GET", "POST"]
   }
 });
@@ -42,6 +47,7 @@ if (accountSid && authToken) {
 // Almacenamiento en memoria para conversaciones activas
 const activeConversations = new Map();
 const connectedClients = new Map();
+const adminClients = new Map();
 
 // Configuración WhatsApp Business
 const WHATSAPP_BUSINESS_NUMBER = '+56951723625'; // Tu número de WhatsApp Business
@@ -50,6 +56,57 @@ const TWILIO_WHATSAPP_NUMBER = process.env.TWILIO_WHATSAPP_NUMBER || 'whatsapp:+
 // Socket.io Connection
 io.on('connection', (socket) => {
   console.log('Cliente conectado:', socket.id);
+
+  // Administrador se conecta
+  socket.on('admin-connect', (data) => {
+    console.log('🔧 Administrador conectado:', socket.id);
+    adminClients.set(socket.id, { role: 'admin', connectedAt: new Date() });
+    
+    // Enviar conversaciones existentes al admin
+    const conversations = Array.from(activeConversations.values());
+    console.log(`📤 Enviando ${conversations.length} conversaciones existentes al admin`);
+    socket.emit('conversations-update', conversations);
+  });
+
+  // Mensaje desde el dashboard administrativo
+  socket.on('admin-message', async (data) => {
+    const { conversationId, message } = data;
+    
+    console.log('Mensaje del admin:', { conversationId, message });
+    
+    if (!activeConversations.has(conversationId)) {
+      socket.emit('error', { message: 'Conversación no encontrada' });
+      return;
+    }
+    
+    const conversation = activeConversations.get(conversationId);
+    
+    // Agregar mensaje a la conversación
+    const newMessage = {
+      id: Date.now(),
+      from: 'executive',
+      message,
+      timestamp: new Date()
+    };
+    
+    conversation.messages.push(newMessage);
+    
+    // Enviar mensaje al cliente en tiempo real
+    io.to(conversationId).emit('executive-message', {
+      conversationId,
+      message,
+      timestamp: new Date(),
+      from: 'Especialista IA Minería'
+    });
+    
+    // Actualizar otros administradores conectados
+    socket.broadcast.emit('conversation-updated', {
+      conversationId,
+      conversation
+    });
+    
+    console.log(`Mensaje del admin enviado a conversación ${conversationId}`);
+  });
 
   // Cliente se une a una conversación
   socket.on('join-conversation', (data) => {
@@ -72,7 +129,7 @@ io.on('connection', (socket) => {
   socket.on('client-message', async (data) => {
     const { conversationId, message, userInfo } = data;
     
-    console.log('Mensaje del cliente:', { conversationId, message, userInfo });
+    console.log('💬 Mensaje del cliente:', { conversationId, message, userInfo });
     
     // Guardar en conversación activa
     if (!activeConversations.has(conversationId)) {
@@ -86,11 +143,32 @@ io.on('connection', (socket) => {
     }
     
     const conversation = activeConversations.get(conversationId);
-    conversation.messages.push({
+    const newMessage = {
       id: Date.now(),
       from: 'client',
       message,
       timestamp: new Date()
+    };
+    
+    conversation.messages.push(newMessage);
+    
+    // Notificar a todos los administradores conectados
+    const isNewConversation = conversation.messages.length === 1; // Es nueva si solo tiene 1 mensaje
+    
+    console.log(`📢 Notificando a ${adminClients.size} administradores. Nueva conversación: ${isNewConversation}`);
+    
+    adminClients.forEach((adminData, adminSocketId) => {
+      if (isNewConversation) {
+        console.log(`✨ Enviando nueva conversación a admin ${adminSocketId}`);
+        io.to(adminSocketId).emit('new-conversation', conversation);
+      } else {
+        console.log(`📨 Enviando mensaje a admin ${adminSocketId}`);
+        io.to(adminSocketId).emit('client-message-admin', {
+          conversationId,
+          message: newMessage,
+          conversation
+        });
+      }
     });
     
     // Enviar mensaje al ejecutivo vía WhatsApp
@@ -145,9 +223,16 @@ INSTRUCCIONES PARA RESPONDER:
   // Desconexión del cliente
   socket.on('disconnect', () => {
     const clientData = connectedClients.get(socket.id);
+    const adminData = adminClients.get(socket.id);
+    
     if (clientData) {
       console.log(`Cliente ${socket.id} desconectado de conversación ${clientData.conversationId}`);
       connectedClients.delete(socket.id);
+    }
+    
+    if (adminData) {
+      console.log(`Administrador ${socket.id} desconectado`);
+      adminClients.delete(socket.id);
     }
   });
 });
@@ -313,7 +398,7 @@ Estado: ${MessageStatus}
   res.status(200).send('Status OK');
 });
 
-// Endpoint para obtener estado de conversaciones (opcional, para dashboard)
+// Endpoint para obtener estado de conversaciones (para dashboard)
 app.get('/api/conversations', (req, res) => {
   const conversations = Array.from(activeConversations.values());
   res.json({
@@ -321,6 +406,7 @@ app.get('/api/conversations', (req, res) => {
     conversations: conversations.map(conv => ({
       id: conv.id,
       userInfo: conv.userInfo,
+      messages: conv.messages,
       messageCount: conv.messages.length,
       status: conv.status,
       createdAt: conv.createdAt,
@@ -352,7 +438,7 @@ setInterval(() => {
   }
 }, 30 * 60 * 1000);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 10000;
 server.listen(PORT, () => {
   console.log(`🚀 Servidor ejecutándose en puerto ${PORT}`);
   console.log(`📱 WhatsApp Business: ${WHATSAPP_BUSINESS_NUMBER}`);

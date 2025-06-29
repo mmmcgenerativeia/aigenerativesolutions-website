@@ -326,8 +326,8 @@ const WhatsAppAgent: React.FC = () => {
     
     // Usar la URL del entorno o localhost para desarrollo
     const socketUrl = process.env.NODE_ENV === 'production' 
-      ? window.location.origin // En producción, usar el mismo dominio
-      : 'http://localhost:3001'; // En desarrollo, usar localhost
+      ? process.env.NEXT_PUBLIC_SERVER_URL || 'https://tu-servidor-railway.railway.app'
+              : 'http://localhost:3003'; // En desarrollo, usar localhost
     
     socketRef.current = io(socketUrl, {
       transports: ['websocket', 'polling'],
@@ -396,8 +396,19 @@ const WhatsAppAgent: React.FC = () => {
 
   // Función para enviar mensaje al ejecutivo
   const sendMessageToExecutive = (message: string, userInfo: LeadInfo) => {
-    if (!socketRef.current || !conversationId) return;
+    console.log('📤 sendMessageToExecutive llamado:', {
+      socketConnected: !!socketRef.current,
+      conversationId,
+      message,
+      userInfo
+    });
+    
+    if (!socketRef.current || !conversationId) {
+      console.error('❌ No se puede enviar mensaje - Socket o conversationId faltante');
+      return;
+    }
 
+    console.log('🚀 Enviando mensaje al servidor...');
     socketRef.current.emit('client-message', {
       conversationId,
       message,
@@ -435,11 +446,26 @@ const WhatsAppAgent: React.FC = () => {
             userInfo: info
           });
           
-          // Enviar mensaje inicial
-          sendMessageToExecutive(
-            `Solicito información sobre: ${info.consulta}`,
-            info
-          );
+          // Esperar un poco antes de enviar el mensaje inicial
+          setTimeout(() => {
+            console.log('🔥 Enviando mensaje inicial:', {
+              conversationId: newConversationId,
+              consulta: info.consulta,
+              userInfo: info
+            });
+            
+            // Usar newConversationId directamente en lugar del estado
+            if (socketRef.current && newConversationId) {
+              console.log('🚀 Enviando mensaje al servidor con ID:', newConversationId);
+              socketRef.current.emit('client-message', {
+                conversationId: newConversationId,
+                message: `Solicito información sobre: ${info.consulta}`,
+                userInfo: info
+              });
+            } else {
+              console.error('❌ Error: Socket o conversationId no disponible');
+            }
+          }, 1000); // Dar tiempo al servidor para procesar la conexión
           
           setIsTyping(true);
           setTimeout(() => {

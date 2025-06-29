@@ -192,7 +192,7 @@ const Hero: React.FC<HeroProps> = ({
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 animate-bounce">
         <button 
           onClick={() => scrollToSection('#servicios')}
           className="p-2 rounded-full glass-card hover:scale-110 transition-transform duration-300"

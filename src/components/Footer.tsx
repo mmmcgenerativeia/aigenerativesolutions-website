@@ -30,7 +30,7 @@ const Footer: React.FC<FooterProps> = ({
   companyName = 'AIGS',
   description = 'Especialistas en IA para minería. Transformamos operaciones mineras con machine learning, geoestadística y analítica avanzada para maximizar eficiencia y ROI.',
   email = 'contacto@aigenerativesolutions.com',
-  phone = '+56 (9) 1234 5678',
+  phone = '+56951723625',
   address = 'Santiago, Chile',
   socialLinks = [
     {
@@ -57,7 +57,7 @@ const Footer: React.FC<FooterProps> = ({
     },
     {
       name: 'WhatsApp',
-      href: 'https://wa.me/56912345678',
+      href: 'https://wa.me/56951723625',
       ariaLabel: 'WhatsApp Business',
       color: '#0284c7',
       icon: (
@@ -306,6 +306,14 @@ const Footer: React.FC<FooterProps> = ({
                   {link.name}
                 </a>
               ))}
+              {/* Admin Dashboard Link */}
+              <a
+                href="/admin"
+                className="text-slate-600 hover:text-orange-400 transition-colors duration-300 text-xs opacity-50 hover:opacity-100"
+                title="Dashboard Administrativo"
+              >
+                Admin
+              </a>
             </div>
           </div>
         </div>
