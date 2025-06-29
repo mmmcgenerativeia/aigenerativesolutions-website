@@ -1,39 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server/index.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/webhook/(.*)",
-      "dest": "server/index.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "server/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "$1"
-    }
-  ],
-  "env": {
-    "TWILIO_ACCOUNT_SID": "@twilio_account_sid",
-    "TWILIO_AUTH_TOKEN": "@twilio_auth_token",
-    "TWILIO_WHATSAPP_NUMBER": "@twilio_whatsapp_number",
-    "WHATSAPP_BUSINESS_NUMBER": "@whatsapp_business_number",
-    "FRONTEND_URL": "@frontend_url"
-  },
-  "functions": {
-    "server/index.js": {
-      "maxDuration": 30
-    }
-  }
+  "name": "aigenerativesolutions-frontend",
+  "framework": "nextjs"
 } 
