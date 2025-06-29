@@ -8,6 +8,7 @@ import WhyUs from '@/components/WhyUs';
 import Testimonials from '@/components/Testimonials';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import WhatsAppAgent from '@/components/WhatsAppAgent';
 
 interface HomePageProps {}
 
@@ -49,6 +50,9 @@ const HomePage: React.FC<HomePageProps> = () => {
       </main>
       
       <Footer />
+      
+      {/* WhatsApp Agent - Widget flotante disponible en toda la página */}
+      <WhatsAppAgent />
     </div>
   );
 };
