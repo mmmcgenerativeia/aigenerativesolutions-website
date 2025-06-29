@@ -603,7 +603,7 @@ const WhatsAppAgent: React.FC = () => {
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder="Escribe tu mensaje..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm text-gray-900 placeholder-gray-500"
                 disabled={currentStep === 0 || isTyping}
               />
               <button
