@@ -5,7 +5,6 @@ interface UserInfo {
   nombre: string;
   empresa: string;
   email: string;
-  telefono: string;
 }
 
 interface Message {

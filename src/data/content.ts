@@ -11,7 +11,6 @@ export const siteConfig = {
   // Información de contacto
   contact: {
     email: 'contacto@aigenerativesolutions.com',
-    phone: '+1 (234) 567-890',
     website: 'https://www.aigenerativesolutions.com'
   },
   

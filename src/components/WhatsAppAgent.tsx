@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { FaWhatsapp, FaTimes, FaRobot, FaUser, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
-import { io, Socket } from 'socket.io-client';
+import React, { useState, useRef, useEffect } from 'react';
+import { FaWhatsapp, FaTimes, FaRobot, FaPaperPlane } from 'react-icons/fa';
 
 interface Message {
   id: number;
@@ -13,88 +12,66 @@ interface Message {
 interface LeadInfo {
   nombre: string;
   empresa: string;
+  email: string;
   consulta: string;
-  telefono?: string;
-}
-
-interface ExecutiveMessage {
-  conversationId: string;
-  message: string;
-  timestamp: Date;
-  from: string;
 }
 
 const WhatsAppAgent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [leadInfo, setLeadInfo] = useState<LeadInfo>({
-    nombre: '',
-    empresa: '',
-    consulta: ''
-  });
   const [userInput, setUserInput] = useState('');
+  const [currentStep, setCurrentStep] = useState(0);
+  const [leadInfo, setLeadInfo] = useState<LeadInfo>({ nombre: '', empresa: '', email: '', consulta: '' });
   const [isTyping, setIsTyping] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
-  const [conversationId, setConversationId] = useState<string | null>(null);
-  
-  const socketRef = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const whatsappNumber = '+56951723625';
-
-  const faqResponses = {
-    'servicios': 'Ofrecemos dos categorías principales:\n\n🎯 **Capacitación Estratégica**\n• Workshop Ejecutivo IA\n• Hoja de Ruta Personalizada\n\n⚡ **Soluciones Alto Impacto**\n• Optimización Geometalúrgica\n• Mantenimiento Predictivo\n• Asistente Geológico LLM\n\n¿Te interesa algún servicio específico?',
-    'precios': 'Nuestros precios varían según el alcance del proyecto. Ofrecemos:\n\n💰 **Workshop Ejecutivo**: Desde $5,000 USD\n🚀 **Proyectos Piloto**: $15,000 - $50,000 USD\n🏭 **Implementación Completa**: $50,000+ USD\n\n*ROI promedio: 10x en 6 meses*\n\n¿Te gustaría una cotización personalizada?',
-    'resultados': 'Nuestros casos de éxito incluyen:\n\n🥇 **Planta de Oro**: +1.5% recuperación ($2.8M/año)\n🏗️ **Flota de Cobre**: -35% downtime ($5.2M ahorro)\n🔬 **Análisis Geológico**: -70% tiempo análisis\n\n📊 **Stats generales**:\n• 95% proyectos exitosos\n• $2.5M ahorro promedio\n• 25+ operaciones optimizadas',
-    'empresa': 'Somos especialistas en IA para el sector minero 🏭\n\n👥 **Nuestro equipo**:\n• Científicos de datos especializados\n• Expertos en recursos naturales\n• Especialistas en geometalurgia\n\n📈 **Experiencia**:\n• 25+ Operaciones optimizadas\n• 150+ Modelos implementados\n• $50M+ Valor generado',
-    'demo': '¡Excelente! Ofrecemos demos gratuitas personalizadas 🎯\n\nEn la demo verás:\n✅ Análisis de tu operación actual\n✅ Identificación de oportunidades\n✅ ROI estimado para tu caso\n✅ Hoja de ruta de implementación\n\n¿Te gustaría agendar una demo ahora?'
-  };
-
+  // Mensajes del bot
   const botMessages = [
     {
-      text: '¡Hola! 👋 Soy el asistente de AI Generative Solutions. Estoy aquí para ayudarte con todo sobre IA para minería.',
-      options: ['Ver servicios', 'Precios', 'Casos de éxito', 'Solicitar demo']
+      text: '¡Hola! 👋 Soy el asistente de IA para minería de AIGS.\n\n¿En qué podemos ayudarte hoy?',
+      options: ['Consultar servicios', 'Solicitar demo', 'Ver precios', 'Casos de éxito', 'Hablar con especialista']
     },
     {
-      text: '¿Cuál es tu nombre? 👤',
+      text: '¡Perfecto! Para poder ayudarte mejor, necesito algunos datos.\n\n¿Cuál es tu nombre? 👤',
       options: []
     },
     {
-      text: '¿De qué empresa o proyecto minero eres? 🏭',
+      text: '¡Excelente! ¿Cuál es el nombre de tu empresa? 🏭',
       options: []
     },
     {
-      text: '¿Cuál es tu consulta específica sobre IA para minería? 💬',
-      options: ['Optimización de procesos', 'Mantenimiento predictivo', 'Análisis geológico', 'Capacitación ejecutiva', 'Otro tema']
+      text: '¿Cuál es tu email de contacto? 📧',
+      options: []
+    },
+    {
+      text: '¿En qué específicamente podemos ayudarte con IA para minería? 🤔\n\nEjemplos:\n• Optimización de planta\n• Mantenimiento predictivo\n• Análisis geológico\n• Geometalurgia\n• Otro tema específico',
+      options: []
     }
   ];
 
+  // Respuestas FAQ
+  const faqResponses = {
+    servicios: 'Ofrecemos dos tipos de soluciones:\n\n🎯 **Capacitación y Adopción Estratégica**\n• Workshop ejecutivo en IA\n• Hoja de ruta personalizada\n\n⚡ **Soluciones de Alto Impacto**\n• Optimización de recuperación\n• Mantenimiento predictivo\n• Asistente geológico inteligente\n\n¿Te interesa alguna en particular?',
+    precios: 'Nuestros precios varían según el tipo de proyecto:\n\n💡 **Workshops**: Desde $5,000 USD\n📊 **Hoja de Ruta**: $8,000 - $15,000 USD\n🚀 **Proyectos de IA**: $25,000 - $200,000 USD\n\n*Los precios dependen del alcance y complejidad*\n\n¿Quieres una cotización personalizada?',
+    resultados: '📈 **Resultados comprobados**:\n\n• +15% recuperación promedio\n• -30% downtime no planificado\n• 10x ROI promedio\n• $2.5M ahorro anual promedio\n\n*Casos reales en operaciones de cobre, oro y hierro*\n\n¿Te gustaría conocer un caso específico?',
+    demo: '🎯 **Demo personalizada de 30 minutos**\n\nTe mostraremos cómo nuestras soluciones se aplican a tu operación específica.\n\n¿Procedemos con tu información de contacto?'
+  };
+
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      setIsTyping(true);
       setTimeout(() => {
         addBotMessage(botMessages[0]);
-        setIsTyping(false);
-      }, 1000);
+      }, 500);
     }
   }, [isOpen]);
 
-  // Scroll automático al final cuando se agregan mensajes
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    scrollToBottom();
   }, [messages]);
 
-  // Limpiar socket al cerrar
-  useEffect(() => {
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
-    };
-  }, []);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const addBotMessage = (message: { text: string; options: string[] }) => {
     const newMessage: Message = {
@@ -112,16 +89,16 @@ const WhatsAppAgent: React.FC = () => {
       id: Date.now(),
       text,
       isBot: false,
-      timestamp: new Date()
+      timestamp: new Date(),
+      options: []
     };
     setMessages(prev => [...prev, newMessage]);
   };
 
   const handleOptionClick = (option: string) => {
     addUserMessage(option);
-    
-    // Handle FAQ responses
     const lowerOption = option.toLowerCase();
+    
     if (lowerOption.includes('servicios')) {
       setIsTyping(true);
       setTimeout(() => {
@@ -162,7 +139,7 @@ const WhatsAppAgent: React.FC = () => {
       return;
     }
 
-    if (lowerOption.includes('hablar') || lowerOption.includes('especialista') || lowerOption.includes('llamada')) {
+    if (lowerOption.includes('hablar') || lowerOption.includes('especialista') || lowerOption.includes('llamada') || lowerOption.includes('cotización')) {
       setCurrentStep(1);
       setIsTyping(true);
       setTimeout(() => {
@@ -172,91 +149,13 @@ const WhatsAppAgent: React.FC = () => {
       return;
     }
 
-    // Handle form steps
-    if (currentStep === 3) {
-      setLeadInfo(prev => ({ ...prev, consulta: option }));
-      connectToExecutive({ ...leadInfo, consulta: option });
-      return;
-    }
-
-    // Handle waiting for agent options
-    if (currentStep === 4) {
-      if (lowerOption.includes('pregunta')) {
-        setIsTyping(true);
-        setTimeout(() => {
-          addBotMessage({
-            text: '¡Por supuesto! 🤔\n\nPuedes hacer tu pregunta adicional y nuestro especialista la tendrá en cuenta cuando se conecte.\n\n¿Cuál es tu pregunta adicional?',
-            options: []
-          });
-          setCurrentStep(5); // Pregunta adicional
-          setIsTyping(false);
-        }, 1000);
-      } else if (lowerOption.includes('email')) {
-        setIsTyping(true);
-        setTimeout(() => {
-          addBotMessage({
-            text: `Perfecto, ${leadInfo.nombre}! 📧\n\nHemos registrado tu preferencia de contacto por email.\n\n✅ Recibirás una respuesta en: contacto@aigenerativesolutions.com\n⏱️ Tiempo estimado: 24-48 horas\n📋 Incluiremos análisis preliminar de tu consulta\n\n¡Gracias por tu interés en nuestras soluciones de IA para minería!`,
-            options: ['Cerrar chat']
-          });
-          setIsTyping(false);
-        }, 1500);
-      } else if (lowerOption.includes('esperaré') || lowerOption.includes('bien')) {
-        setIsTyping(true);
-        setTimeout(() => {
-          addBotMessage({
-            text: '¡Excelente actitud! 👍\n\nMantén esta ventana abierta. Nuestro especialista aparecerá aquí mismo cuando esté disponible.\n\n⚡ *Estado: Esperando especialista*\n🕐 *Tiempo estimado: 2-5 minutos*\n\n💡 *Tip: Mientras esperas, puedes navegar por nuestra página para conocer más casos de éxito.*',
-            options: ['Cancelar y cerrar', 'Cambiar a contacto por email']
-          });
-          setIsTyping(false);
-        }, 1500);
-      } else if (lowerOption.includes('cancelar') || lowerOption.includes('cerrar')) {
-        setIsOpen(false);
-        setTimeout(() => {
-          setMessages([]);
-          setCurrentStep(0);
-          setLeadInfo({ nombre: '', empresa: '', consulta: '' });
-          setConversationId(null);
-          if (socketRef.current) {
-            socketRef.current.disconnect();
-            socketRef.current = null;
-          }
-        }, 500);
-      }
-      return;
-    }
-
-    // Handle conversación activa (paso 6)
-    if (currentStep === 6) {
-      if (lowerOption.includes('otra pregunta')) {
-        setCurrentStep(7); // Modo pregunta libre
-        setIsTyping(true);
-        setTimeout(() => {
-          addBotMessage({
-            text: '¿Cuál es tu pregunta adicional? 🤔\n\nEscríbela abajo y el especialista la recibirá inmediatamente.',
-            options: []
-          });
-          setIsTyping(false);
-        }, 1000);
-      } else if (lowerOption.includes('cotización')) {
-        if (socketRef.current && conversationId) {
-          sendMessageToExecutive('Solicito cotización formal para mi proyecto de IA en minería', leadInfo);
-          addUserMessage(option);
-        }
-      } else if (lowerOption.includes('reunión')) {
-        if (socketRef.current && conversationId) {
-          sendMessageToExecutive('Me gustaría agendar una reunión para discutir mi proyecto en detalle', leadInfo);
-          addUserMessage(option);
-        }
-      } else if (lowerOption.includes('finalizar')) {
-        setIsTyping(true);
-        setTimeout(() => {
-          addBotMessage({
-            text: `¡Gracias por contactarnos, ${leadInfo.nombre}! 🙏\n\n✅ Tu conversación ha sido guardada\n📧 Recibirás seguimiento por email\n🤝 Esperamos poder ayudarte con tu proyecto de IA para minería\n\n¡Hasta pronto!`,
-            options: ['Cerrar chat']
-          });
-          setIsTyping(false);
-        }, 1000);
-      }
+    if (lowerOption.includes('cerrar')) {
+      setIsOpen(false);
+      setTimeout(() => {
+        setMessages([]);
+        setCurrentStep(0);
+        setLeadInfo({ nombre: '', empresa: '', email: '', consulta: '' });
+      }, 500);
       return;
     }
   };
@@ -284,201 +183,35 @@ const WhatsAppAgent: React.FC = () => {
         setIsTyping(false);
       }, 1000);
     } else if (currentStep === 3) {
-      const finalLeadInfo = { ...leadInfo, consulta: userInput };
-      setLeadInfo(finalLeadInfo);
-      connectToExecutive(finalLeadInfo);
-    } else if (currentStep === 5) {
-      // Pregunta adicional
+      setLeadInfo(prev => ({ ...prev, email: userInput }));
+      setCurrentStep(4);
       setIsTyping(true);
       setTimeout(() => {
-        addBotMessage({
-          text: `Pregunta adicional registrada: "${userInput}"\n\n✅ Nuestro especialista tendrá toda esta información cuando se conecte:\n\n👤 Cliente: ${leadInfo.nombre}\n🏭 Empresa: ${leadInfo.empresa}\n💬 Consulta principal: ${leadInfo.consulta}\n❓ Pregunta adicional: ${userInput}\n\n⚡ *Estado: Esperando especialista*`,
-          options: ['Está bien, esperaré', 'Cambiar a contacto por email']
-        });
-        setCurrentStep(4); // Volver a estado de espera
+        addBotMessage(botMessages[4]);
         setIsTyping(false);
-      }, 1500);
-    } else if (currentStep === 6 || currentStep === 7) {
-      // Conversación activa - enviar mensaje al ejecutivo
-      if (socketRef.current && conversationId) {
-        sendMessageToExecutive(userInput, leadInfo);
-        
-        // Confirmar que el mensaje fue enviado
-        setIsTyping(true);
-        setTimeout(() => {
-          addBotMessage({
-            text: '📤 Mensaje enviado al especialista. Recibirás la respuesta aquí mismo.',
-            options: []
-          });
-          setIsTyping(false);
-        }, 500);
-      }
+      }, 1000);
+    } else if (currentStep === 4) {
+      const finalLeadInfo = { ...leadInfo, consulta: userInput };
+      setLeadInfo(finalLeadInfo);
+      sendContactEmail(finalLeadInfo);
     }
 
     setUserInput('');
   };
 
-  // Inicializar conexión Socket.io
-  const initializeSocket = () => {
-    if (socketRef.current) return;
-    
-    setConnectionStatus('connecting');
-    
-    // Usar la URL del entorno o localhost para desarrollo
-    const socketUrl = process.env.NODE_ENV === 'production' 
-      ? process.env.NEXT_PUBLIC_SERVER_URL || 'https://aigs-whatsapp-server.onrender.com'
-              : 'http://localhost:3003'; // En desarrollo, usar localhost
-    
-    socketRef.current = io(socketUrl, {
-      transports: ['websocket', 'polling'],
-      timeout: 20000,
-      forceNew: true
-    });
-
-    socketRef.current.on('connect', () => {
-      console.log('Conectado al servidor');
-      setConnectionStatus('connected');
-    });
-
-    socketRef.current.on('disconnect', () => {
-      console.log('Desconectado del servidor');
-      setConnectionStatus('disconnected');
-    });
-
-    socketRef.current.on('conversation-joined', (data) => {
-      console.log('Unido a conversación:', data);
-      addBotMessage({
-        text: `🔗 Conexión establecida exitosamente!\n\nID de conversación: ${data.conversationId}\n\n✅ El sistema está listo para recibir respuestas del especialista en tiempo real.`,
-        options: []
-      });
-    });
-
-    socketRef.current.on('executive-message', (data: ExecutiveMessage) => {
-      console.log('Mensaje del ejecutivo recibido:', data);
-      
-      // Agregar mensaje del ejecutivo al chat
-      const executiveMessage: Message = {
-        id: Date.now(),
-        text: data.message,
-        isBot: false, // Será mostrado como mensaje del ejecutivo
-        timestamp: new Date(data.timestamp),
-        options: []
-      };
-      
-      setMessages(prev => [...prev, executiveMessage]);
-      
-      // Mostrar confirmación de que el ejecutivo se conectó
-      setTimeout(() => {
-        addBotMessage({
-          text: `✅ ${data.from} ha respondido tu consulta.\n\nPuedes continuar la conversación escribiendo tu respuesta abajo. El especialista recibirá tus mensajes en tiempo real.`,
-          options: ['Hacer otra pregunta', 'Solicitar cotización', 'Agendar reunión', 'Finalizar chat']
-        });
-        setCurrentStep(6); // Nuevo paso: conversación activa
-      }, 1000);
-    });
-
-    socketRef.current.on('message-sent', (data) => {
-      console.log('Mensaje enviado:', data);
-      addBotMessage({
-        text: `📤 ${data.message}`,
-        options: []
-      });
-    });
-
-    socketRef.current.on('message-error', (data) => {
-      console.error('Error de mensaje:', data);
-      addBotMessage({
-        text: `❌ Error: ${data.error}\n\nPor favor intenta nuevamente o contacta por email: contacto@aigenerativesolutions.com`,
-        options: ['Reintentar', 'Contacto por email']
-      });
-    });
-  };
-
-  // Función para enviar mensaje al ejecutivo
-  const sendMessageToExecutive = (message: string, userInfo: LeadInfo) => {
-    console.log('📤 sendMessageToExecutive llamado:', {
-      socketConnected: !!socketRef.current,
-      conversationId,
-      message,
-      userInfo
-    });
-    
-    if (!socketRef.current || !conversationId) {
-      console.error('❌ No se puede enviar mensaje - Socket o conversationId faltante');
-      return;
-    }
-
-    console.log('🚀 Enviando mensaje al servidor...');
-    socketRef.current.emit('client-message', {
-      conversationId,
-      message,
-      userInfo
-    });
-  };
-
-  // Generar ID único para la conversación
-  const generateConversationId = () => {
-    return `conv-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  };
-
-  const connectToExecutive = (info: LeadInfo) => {
-    const newConversationId = generateConversationId();
-    setConversationId(newConversationId);
-    
-    // Inicializar socket si no existe
-    if (!socketRef.current) {
-      initializeSocket();
-    }
-    
+  const sendContactEmail = (info: LeadInfo) => {
     setIsTyping(true);
     setTimeout(() => {
       addBotMessage({
-        text: `¡Perfecto, ${info.nombre}! 🎯\n\nTu consulta sobre "${info.consulta}" para ${info.empresa} ha sido registrada.\n\n✅ Conectando con especialista en tiempo real\n🔄 Estableciendo comunicación segura\n💬 Mantén esta ventana abierta\n\n*Inicializando sistema...*`,
-        options: []
+        text: `¡Perfecto, ${info.nombre}! 🎯\n\nHemos registrado tu consulta sobre "${info.consulta}" para ${info.empresa}.\n\n✅ Tu solicitud ha sido enviada por email\n📧 Recibirás respuesta en: ${info.email}\n⏱️ Tiempo estimado: 24-48 horas\n📋 Incluiremos análisis preliminar personalizado\n\n¡Gracias por tu interés en nuestras soluciones de IA para minería!`,
+        options: ['Cerrar chat', 'Hacer otra consulta']
       });
       setIsTyping(false);
       
-      setTimeout(() => {
-        if (socketRef.current) {
-          // Unirse a la conversación
-          socketRef.current.emit('join-conversation', {
-            conversationId: newConversationId,
-            userInfo: info
-          });
-          
-          // Esperar un poco antes de enviar el mensaje inicial
-          setTimeout(() => {
-            console.log('🔥 Enviando mensaje inicial:', {
-              conversationId: newConversationId,
-              consulta: info.consulta,
-              userInfo: info
-            });
-            
-            // Usar newConversationId directamente en lugar del estado
-            if (socketRef.current && newConversationId) {
-              console.log('🚀 Enviando mensaje al servidor con ID:', newConversationId);
-              socketRef.current.emit('client-message', {
-                conversationId: newConversationId,
-                message: `Solicito información sobre: ${info.consulta}`,
-                userInfo: info
-              });
-            } else {
-              console.error('❌ Error: Socket o conversationId no disponible');
-            }
-          }, 1000); // Dar tiempo al servidor para procesar la conexión
-          
-          setIsTyping(true);
-          setTimeout(() => {
-            addBotMessage({
-              text: `🔔 ¡Especialista notificado!\n\n👨‍💼 Un experto en IA para minería ha recibido tu consulta y responderá en breve.\n\n⚡ Tiempo estimado: 2-5 minutos\n🔄 Estado: Esperando conexión\n📱 El especialista puede responder desde su WhatsApp\n\n*Conversación en tiempo real activada*`,
-              options: ['Tengo una pregunta adicional', 'Prefiero ser contactado por email', 'Está bien, esperaré']
-            });
-            setIsTyping(false);
-            setCurrentStep(4); // Esperando agente
-          }, 2000);
-        }
-      }, 3000);
-    }, 1500);
+      // Aquí podrías enviar el email real o guardarlo en una base de datos
+      console.log('Nueva consulta de contacto:', info);
+      
+    }, 2000);
   };
 
   return (
@@ -502,7 +235,7 @@ const WhatsAppAgent: React.FC = () => {
           
           {/* Tooltip */}
           <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-            💬 Asistente IA Minería
+            💬 Consulta por Email
           </div>
         </button>
       </div>
@@ -519,23 +252,8 @@ const WhatsAppAgent: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-bold">Asistente IA Minería</h3>
-                <p className="text-sm opacity-90 flex items-center gap-2">
-                  {connectionStatus === 'connected' && currentStep >= 4 ? (
-                    <>
-                      <FaCheckCircle className="h-3 w-3 text-green-300" />
-                      Conectado en tiempo real
-                    </>
-                  ) : connectionStatus === 'connecting' ? (
-                    <>
-                      <div className="h-3 w-3 bg-yellow-300 rounded-full animate-pulse"></div>
-                      Conectando...
-                    </>
-                  ) : (
-                    <>
-                      <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
-                      En línea
-                    </>
-                  )}
+                <p className="text-sm opacity-90">
+                  💌 Contacto por Email
                 </p>
               </div>
             </div>
