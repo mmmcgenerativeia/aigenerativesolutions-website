@@ -1,10 +1,12 @@
 'use client';
 
 import React from 'react';
-import { getIndustryTheme, type IndustryTheme } from '@/data/design-tokens';
+import { industryThemes } from '@/data/design-tokens';
+
+type IndustryType = 'mineria' | 'madera' | 'agricultura' | 'servicios';
 
 interface IndustryButtonProps {
-  industry: IndustryTheme;
+  industry: IndustryType;
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -28,7 +30,7 @@ const IndustryButton: React.FC<IndustryButtonProps> = ({
   icon,
   iconPosition = 'left',
 }) => {
-  const theme = getIndustryTheme(industry);
+  const theme = industryThemes[industry];
 
   const getSizeClasses = () => {
     switch (size) {
@@ -46,11 +48,11 @@ const IndustryButton: React.FC<IndustryButtonProps> = ({
   };
 
   const getVariantClasses = () => {
-    const baseClasses = `${theme.spacing.borderRadius} ${theme.fonts.accent} ${theme.effects.buttonHover}`;
+    const baseClasses = `rounded-xl font-bold transition-all duration-300 hover:scale-105 hover:shadow-lg`;
     
     switch (variant) {
       case 'primary':
-        return `${baseClasses} bg-gradient-to-r ${theme.colors.gradients.cta} text-white shadow-lg hover:shadow-xl`;
+        return `${baseClasses} bg-gradient-to-r ${theme.gradient} text-white shadow-lg hover:shadow-xl`;
       
       case 'secondary':
         const secondaryBg = industry === 'mineria' ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' :

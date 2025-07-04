@@ -1,10 +1,12 @@
 'use client';
 
 import React from 'react';
-import { getIndustryTheme, type IndustryTheme } from '@/data/design-tokens';
+import { industryThemes } from '@/data/design-tokens';
+
+type IndustryType = 'mineria' | 'madera' | 'agricultura' | 'servicios';
 
 interface IndustryCardProps {
-  industry: IndustryTheme;
+  industry: IndustryType;
   title: string;
   description: string;
   features?: string[];
@@ -29,20 +31,20 @@ const IndustryCard: React.FC<IndustryCardProps> = ({
   variant = 'default',
   className = '',
 }) => {
-  const theme = getIndustryTheme(industry);
+  const theme = industryThemes[industry];
   
   const getVariantClasses = () => {
-    const baseClasses = `${theme.spacing.borderRadius} ${theme.effects.cardShadow} ${theme.effects.cardHover} overflow-hidden`;
+    const baseClasses = `rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-500 overflow-hidden`;
     
     switch (variant) {
       case 'feature':
-        return `${baseClasses} bg-gradient-to-br ${theme.colors.gradients.card} border border-opacity-20`;
+        return `${baseClasses} bg-gradient-to-br from-white/95 to-gray-50/95 border border-opacity-20`;
       case 'metric':
         return `${baseClasses} bg-white border border-gray-200`;
       case 'case-study':
-        return `${baseClasses} bg-white ${theme.spacing.cardPadding}`;
+        return `${baseClasses} bg-white p-6`;
       default:
-        return `${baseClasses} bg-white ${theme.spacing.cardPadding}`;
+        return `${baseClasses} bg-white p-6`;
     }
   };
 
@@ -124,12 +126,12 @@ const IndustryCard: React.FC<IndustryCardProps> = ({
       )}
 
       {/* Title */}
-      <h3 className={`text-2xl ${theme.fonts.heading} mb-4 ${textColors.title}`}>
+      <h3 className={`text-2xl font-bold mb-4 ${textColors.title}`}>
         {title}
       </h3>
 
       {/* Description */}
-      <p className={`${theme.fonts.body} mb-6 ${textColors.description}`}>
+      <p className={`leading-relaxed mb-6 ${textColors.description}`}>
         {description}
       </p>
 
@@ -147,9 +149,9 @@ const IndustryCard: React.FC<IndustryCardProps> = ({
         <div className="grid grid-cols-3 gap-4 text-center">
           {metrics.map((metric, index) => (
             <div key={index}>
-              <div className={`text-2xl font-bold ${theme.colors.primary === '#D97706' ? 'text-amber-600' : 
-                theme.colors.primary === '#059669' ? 'text-green-600' : 
-                theme.colors.primary === '#65A30D' ? 'text-lime-600' : 
+              <div className={`text-2xl font-bold ${theme.primary === '#f97316' ? 'text-amber-600' : 
+                theme.primary === '#0d9488' ? 'text-green-600' : 
+                theme.primary === '#06b6d4' ? 'text-lime-600' : 
                 'text-blue-600'}`}>
                 {metric.value}
               </div>
@@ -164,9 +166,9 @@ const IndustryCard: React.FC<IndustryCardProps> = ({
         <div className="grid grid-cols-3 gap-4 text-center mt-6">
           {metrics.map((metric, index) => (
             <div key={index}>
-              <div className={`text-2xl font-bold ${theme.colors.primary === '#D97706' ? 'text-amber-600' : 
-                theme.colors.primary === '#059669' ? 'text-green-600' : 
-                theme.colors.primary === '#65A30D' ? 'text-lime-600' : 
+              <div className={`text-2xl font-bold ${theme.primary === '#f97316' ? 'text-amber-600' : 
+                theme.primary === '#0d9488' ? 'text-green-600' : 
+                theme.primary === '#06b6d4' ? 'text-lime-600' : 
                 'text-blue-600'}`}>
                 {metric.value}
               </div>
@@ -180,7 +182,7 @@ const IndustryCard: React.FC<IndustryCardProps> = ({
       {href && (
         <a 
           href={href}
-          className={`inline-block bg-gradient-to-r ${theme.colors.gradients.cta} text-white px-6 py-3 rounded-lg ${theme.effects.buttonHover} font-bold`}
+          className={`inline-block bg-gradient-to-r ${theme.gradient} text-white px-6 py-3 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300 font-bold`}
         >
           {variant === 'feature' ? `Ver ${title}` : 'Más información'}
         </a>

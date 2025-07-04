@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
-import { type IndustryTheme } from '@/data/design-tokens';
+
+type IndustryType = 'mineria' | 'madera' | 'agricultura' | 'servicios';
 
 interface IndustryIconProps {
-  industry: IndustryTheme;
+  industry: IndustryType;
   name: string;
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   className?: string;
