@@ -16,7 +16,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({
   siteName = 'AIGS',
   navigation = [
-    { name: 'Inicio', href: '#inicio' },
+    { name: 'Inicio', href: '/' },
     { name: 'Nosotros', href: '#nosotros' },
     { name: 'Servicios', href: '#servicios' },
     { name: 'Contacto', href: '#contacto' }
@@ -45,7 +45,10 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   const handleNavClick = (href: string) => {
-    if (href.startsWith('#')) {
+    if (href === '/') {
+      // Navigate to home page
+      window.location.href = '/';
+    } else if (href.startsWith('#')) {
       scrollToSection(href);
     }
   };

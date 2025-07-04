@@ -16,8 +16,8 @@ export const siteConfig = {
   
   // Redes sociales
   socialLinks: {
-    linkedin: 'https://www.linkedin.com/company/aigenerativesolutions',
-    twitter: 'https://twitter.com/aigs_solutions',
+    linkedin: 'https://www.linkedin.com/company/ai-generative-solutions',
+    //twitter: 'https://twitter.com/aigs_solutions',
     github: 'https://github.com/aigenerativesolutions'
   }
 };
